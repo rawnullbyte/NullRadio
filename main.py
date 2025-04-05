@@ -11,7 +11,7 @@ app = FastAPI()
 ASSETS_DIR = Path('assets/waifus/')
 STATIC_DIR = Path('static')
 
-# Mount the static directory to serve files from it at the root (e.g., /index.html, /style.css)
+# Mount the static directory to serve files from it directly at the root (e.g., /script.js, /index.html)
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 @app.get("/assets/waifus/")
