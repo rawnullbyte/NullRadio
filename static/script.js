@@ -26,6 +26,9 @@ function initPlayButton() {
 function updateProgress() {
     console.log('Updating progress...');
     songElapsed++;
+    if (songDuration == songElapsed) {
+      songDuration = 0
+    }
     console.log(songDuration)
     if (songDuration === 0) {
         console.warn("Song duration is not available from the API.");
