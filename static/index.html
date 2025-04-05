@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Null Radio</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-blur"></div>
+
+  <div class="radio-ui">
+    <h1>Null Radio</h1>
+
+    <div class="track-info">
+      <img id="art" src="" alt="Track Art">
+      <div class="meta">
+        <h2 id="title">Loading...</h2>
+        <p id="artist">...</p>
+      </div>
+    </div>
+
+    <div class="progress-wrapper">
+      <div id="progress-bar"></div>
+    </div>
+
+    <div class="controls">
+      <button id="play-btn"><i class="ri-pause-line"></i></button>
+    </div>
+
+    <div id="volume-wrapper">
+      <label for="volume-slider" class="volume-label">🔊</label>
+      <input type="range" id="volume-slider" min="0" max="1" step="0.01">
+    </div>
+
+    <div id="easter-egg">👀</div>
+  </div>
+
+  <img id="waifu" src="" alt="waifu">
+
+  <audio id="audio" src="https://azura.nullbyte.rip/listen/nullradio/radio.mp3" autoplay></audio>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const rainContainer = document.body;  // Container for the rain (the body itself)
+      const numberOfRaindrops = 150;  // Number of raindrops to generate
+      
+      // Create and append raindrop elements
+      for (let i = 0; i < numberOfRaindrops; i++) {
+        const raindrop = document.createElement('div');
+        raindrop.classList.add('rain');
+  
+        // Set random properties for each raindrop
+        const topPosition = Math.random() * 100; // Random top position (0 to 100%)
+        const leftPosition = Math.random() * 100; // Random left position (0 to 100%)
+        const opacity = Math.random() * 0.3 + 0.2; // Random opacity (0.2 to 0.5)
+        const animationDuration = Math.random() * 3 + 3; // Random duration (3s to 6s)
+        const animationDelay = Math.random() * 2 + 's'; // Random delay (0s to 2s)
+  
+        raindrop.style.left = leftPosition + '%';
+        raindrop.style.top = -Math.random() * 100 + '%';  // Start above the screen
+        raindrop.style.opacity = opacity;
+        raindrop.style.animationDuration = `${animationDuration}s`;
+        raindrop.style.animationDelay = animationDelay;
+  
+        rainContainer.appendChild(raindrop);
+      }
+    });
+  </script>
+  
+</body>
+
+</html>

@@ -1,0 +1,197 @@
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background: #0d1a25; /* Deep blue background for water theme */
+    overflow: hidden;
+    height: 100vh;
+    color: #d1e0f1; /* Light cool blue color for text */
+}
+
+.rain {
+    position: absolute;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(173, 216, 230, 0.5) 100%); /* Soft blue for raindrops */
+    width: 1px;
+    height: 50px;
+    opacity: 0.2; /* Much softer opacity for raindrops */
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0);
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateY(100vh);  /* Raindrops fall to the bottom */
+        opacity: 0;  /* Fade out as it reaches the bottom */
+    }
+}
+
+/* Background blur effect */
+.bg-blur {
+    background: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.wallpapersafari.com%2F57%2F69%2FqhRp4I.jpg&f=1&nofb=1&ipt=5f346210d9c8f701f70911201ce37475058dadd8b9945c4697d4356facee665f&ipo=images') no-repeat center center/cover;
+    filter: blur(10px) brightness(0.25) saturate(1.2); /* Dimmer and more saturated background */
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+}
+
+/* Other UI styles */
+.radio-ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 25, 40, 0.6); /* Darker transparent background */
+    padding: 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(16px) saturate(160%);
+    box-shadow: 
+        0 0 15px rgba(20, 60, 80, 0.6), 
+        0 0 25px rgba(0, 54, 82, 0.4), 
+        inset 0 0 10px rgba(0, 25, 51, 0.4);
+    width: 90%;
+    max-width: 520px;
+    text-align: center;
+    border: 1px solid rgba(173, 216, 230, 0.5); /* Lighter blue border */
+    animation: flicker 5s infinite alternate;
+}
+
+/* Flicker animation */
+@keyframes flicker {
+    0% { box-shadow: 0 0 10px rgba(20, 60, 80, 0.6), 0 0 20px rgba(20, 60, 80, 0.6); }
+    100% { box-shadow: 0 0 25px rgba(0, 54, 82, 0.7), 0 0 50px rgba(0, 54, 82, 0.7); }
+}
+
+/* Additional UI elements (track info, progress bar, etc.) */
+.track-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.track-info img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(173, 216, 230, 0.5);
+    box-shadow: 0 0 10px rgba(173, 216, 230, 0.4);
+}
+
+.meta h2 {
+    font-size: 1.2em;
+    text-shadow: 0 0 5px rgba(173, 216, 230, 0.6), 0 0 10px rgba(0, 54, 82, 0.6);
+    color: #d1e0f1;
+    text-align: left;
+}
+
+.meta p {
+    font-size: 0.9em;
+    color: #aaaacc;
+    text-shadow: 0 0 3px #000;
+    text-align: left; /* Align the artist text to the left */
+}
+
+
+.progress-wrapper {
+    height: 8px;
+    width: 100%;
+    background: #111; /* Dark background for contrast */
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: inset 0 0 10px rgba(173, 216, 230, 0.4); /* Blueish glow for the progress bar */
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(173, 216, 230, 0.7), rgba(0, 204, 255, 0.7)); /* Light blue gradient */
+    transition: width 1s ease-out;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 20px;
+}
+
+#play-btn {
+    background: transparent;
+    border: none;
+    color: #d1e0f1;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    text-shadow: 0 0 10px rgba(173, 216, 230, 0.7);
+}
+
+#play-btn:hover {
+    transform: scale(1.1);
+    color: #a0c4ff;
+    text-shadow: 0 0 12px rgba(173, 216, 230, 0.8);
+}
+
+#volume-wrapper {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#volume-wrapper:hover {
+    transform: translateY(-50%) scale(1.05);
+}
+
+#volume-slider {
+    width: 140px;
+    accent-color: rgba(173, 216, 230, 0.4); /* Softer water blue accent */
+    background: transparent;
+    filter: drop-shadow(0 0 2px rgba(173, 216, 230, 0.3)); /* Less bright shadow */
+    transition: 0.3s ease;
+}
+
+
+.volume-label {
+    font-size: 2rem;
+    color: #d1e0f1;
+    transition: transform 0.3s ease;
+}
+
+#waifu {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 180px;
+    z-index: 99;
+    pointer-events: none;
+    margin-bottom: -4px;
+    filter: drop-shadow(0 0 5px rgba(173, 216, 230, 0.7));
+}
+
+#easter-egg {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-style: italic;
+    color: #d1e0f1;
+    user-select: none;
+    text-shadow: 0 0 6px rgba(173, 216, 230, 0.7);
+}
+
+#easter-egg:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    text-shadow: 0 0 8px rgba(173, 216, 230, 0.8);
+}
