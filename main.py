@@ -11,8 +11,16 @@ app = FastAPI()
 ASSETS_DIR = Path('assets/waifus/')
 STATIC_DIR = Path('static')
 
-# Mount the static directory to serve files from it directly at the root (e.g., /script.js, /index.html)
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+# Mount the static directory to serve files from it at /static/ (not at the root)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Route to serve static files without the "/static/" prefix
+@app.get("/{filename}")
+async def serve_static_file(filename: str):
+    file_path = STATIC_DIR / filename
+    if file_path.is_file():
+        return FileResponse(file_path)
+    return JSONResponse({"error": "File not found"}, status_code=404)
 
 @app.get("/assets/waifus/")
 async def get_waifu_images():
