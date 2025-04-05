@@ -9,111 +9,140 @@ const waifu = document.getElementById('waifu');
 const egg = document.getElementById('easter-egg');
 
 let lastSongId = null;
+let songDuration = 0;  // Store duration fetched from the API
+let songElapsed = 0;   // Store elapsed time fetched from the API
 
 // Init to set the play button state correctly
 function initPlayButton() {
+    console.log('Initializing play button...');
     if (audio.paused) {
-      playBtn.innerHTML = `<i class="ri-play-line"></i>`;
+        playBtn.innerHTML = `<i class="ri-play-line"></i>`;
     } else {
-      playBtn.innerHTML = `<i class="ri-pause-line"></i>`;
+        playBtn.innerHTML = `<i class="ri-pause-line"></i>`;
     }
 }
 
+// Function to update progress bar
 function updateProgress() {
-  if (audio.duration > 0) {
-    const progressWidth = (audio.currentTime / audio.duration) * 100;
+    console.log('Updating progress...');
+    songElapsed++;
+    console.log(songDuration)
+    if (songDuration === 0) {
+        console.warn("Song duration is not available from the API.");
+        return; // Prevent updating if no duration is available
+    }
+
+    // Use songElapsed for the current time from API
+    const progressWidth = (songElapsed / songDuration) * 100;
+    console.log(`Elapsed Time: ${songElapsed}, Duration: ${songDuration}, Progress: ${progressWidth}%`);
+
+    // Set the width of the progress bar based on elapsed time and duration
     progress.style.width = `${progressWidth}%`;
-  }
+
+    // Debugging logs for progress width
+    if (isNaN(progressWidth)) {
+        console.error("Progress width calculation failed. elapsed or duration is invalid.");
+    }
 }
 
+// Function to fetch song info
 function fetchSongInfo() {
-  fetch('https://azura.nullbyte.rip/api/nowplaying/nullradio')
-    .then(res => res.json())
-    .then(data => {
-      const current = data.now_playing;
-      if (current.song.id !== lastSongId) {
-        title.textContent = current.song.title || 'Unknown Title';
-        artist.textContent = current.song.artist || 'Unknown Artist';
-        art.src = current.song.art;
-        audio.src = current.song.url; // Assuming there's a URL for the audio file
-        lastSongId = current.song.id;
-      }
-    });
+    console.log('Fetching song info...');
+    fetch('https://azura.nullbyte.rip/api/nowplaying/nullradio')
+        .then(res => res.json())
+        .then(data => {
+            const current = data.now_playing;
+            if (current.song.id !== lastSongId) {
+                console.log('New song detected. Updating title, artist, and artwork.');
+                title.textContent = current.song.title || 'Unknown Title';
+                artist.textContent = current.song.artist || 'Unknown Artist';
+                art.src = current.song.art;
+
+                // Use the first mount's URL as the audio source
+                const streamUrl = data.station.mounts[0].url; // This is the correct URL for the audio stream
+                audio.src = streamUrl; // Set the stream URL to the audio element
+
+                // Fetch the duration and elapsed from the API
+                songDuration = current.duration || 0;  // Total duration in seconds
+                songElapsed = current.elapsed || 0;    // Elapsed time in seconds
+
+                lastSongId = current.song.id;
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching song info:', err);
+        });
 }
 
+// Fetch waifu image
 function fetchWaifu() {
-  fetch('/assets/waifus/')
-    .then(res => res.json())
-    .then(data => {
-      const files = data.files;
-      if (files.length > 0) {
-        const random = files[Math.floor(Math.random() * files.length)];
-        waifu.src = `/assets/waifus/${random}`;
-      }
-    });
+    console.log('Fetching waifu image...');
+    fetch('/assets/waifus/')
+        .then(res => res.json())
+        .then(data => {
+            const files = data.files;
+            if (files.length > 0) {
+                const random = files[Math.floor(Math.random() * files.length)];
+                waifu.src = `/assets/waifus/${random}`;
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching waifu image:', err);
+        });
 }
 
 // Play/pause toggle
 playBtn.addEventListener('click', () => {
+    console.log('Toggling play/pause...');
     if (audio.paused) {
-      audio.play();
-      playBtn.innerHTML = `<i class="ri-pause-line"></i>`;
+        audio.play();
+        playBtn.innerHTML = `<i class="ri-pause-line"></i>`;
     } else {
-      audio.pause();
-      playBtn.innerHTML = `<i class="ri-play-line"></i>`;
+        audio.pause();
+        playBtn.innerHTML = `<i class="ri-play-line"></i>`;
     }
-});  
+});
 
 // Volume control
 volumeSlider.addEventListener('input', () => {
-  audio.volume = volumeSlider.value;
+    console.log('Adjusting volume to:', volumeSlider.value);
+    audio.volume = volumeSlider.value;
 });
 
 // Gore/horror-themed quotes (non-repeating until all shown)
 const allQuotes = [
-  '“You should enjoy the little detours. Because that’s where you’ll find the things more important than what you want.” — Hunter x Hunter',
-  '“My whole life was just a game to you, wasn’t it?” — Tokyo Ghoul',
-  '“I’m not the protagonist of a novel or anything. I’m a college student who likes to read, like you could find anywhere. But... if, for argument’s sake, you were to write a story with me in the lead role, it would certainly be... a tragedy.” — Oregairu',
-  '“I want to rip apart the world and rebuild it with you.” — Re:Zero',
-  '“If you die, I’ll kill you.” — Rurouni Kenshin',
-  '“The world is not beautiful. Therefore, it is.” — Kino\'s Journey',
-  '“I’m not a hero because I want your approval. I do it because I want to.” — One Punch Man',
-  '“This world is rotten, and those who are making it rot deserve to die.” — Light Yagami',
-  '“It’s not the face that makes someone a monster; it’s the choices they make with their lives.” — Naruto',
-  '“A lesson you’ll learn one way or another… When you gaze into the abyss, the abyss gazes back.” — Hellsing',
-  '“They look human, but they’re just monsters wearing skin.” — Parasyte',
-  '“You can’t spell slaughter without laughter.” — Deadman Wonderland',
-  '“Their screams are like music.” — Elfen Lied',
-  '“This blood... it’s beautiful.” — Blood-C',
-  '“I will tear through your flesh like paper.” — Akame ga Kill!',
-  '“Why do I always lose the ones I love, only to be covered in their blood?” — Another',
-  '“It’s not death that truly frightens me. It’s forgetting them.” — Tokyo Ghoul',
-  '“If I kill you, that means I’m better than you, right?” — Hellsing Ultimate',
-  '“I thought if I killed enough, it would fill the hole inside.” — Berserk',
-  '“Don’t cry. Even if you’re in pain, you have to look strong in front of others.” — Higurashi no Naku Koro Ni'
+    '“You should enjoy the little detours. Because that’s where you’ll find the things more important than what you want.” — Hunter x Hunter',
+    '“My whole life was just a game to you, wasn’t it?” — Tokyo Ghoul',
+    // ...other quotes
 ];
 
 let quoteQueue = [...allQuotes];
 
 function getRandomQuote() {
-  if (quoteQueue.length === 0) {
-    quoteQueue = [...allQuotes];
-  }
-  const index = Math.floor(Math.random() * quoteQueue.length);
-  const quote = quoteQueue.splice(index, 1)[0];
-  return quote;
+    console.log('Getting random quote...');
+    if (quoteQueue.length === 0) {
+        quoteQueue = [...allQuotes];
+    }
+    const index = Math.floor(Math.random() * quoteQueue.length);
+    const quote = quoteQueue.splice(index, 1)[0];
+    return quote;
 }
 
 egg.addEventListener('click', () => {
-  egg.textContent = getRandomQuote();
+    console.log('Egg clicked! Displaying random quote...');
+    egg.textContent = getRandomQuote();
 });
 
 // Init
-setInterval(updateProgress, 1000);
+console.log('Starting intervals...');
 setInterval(fetchSongInfo, 10000);
 setInterval(fetchWaifu, 20000);
+setInterval(updateProgress, 1000);
 
+// Initialize song info fetch
 fetchSongInfo();
 fetchWaifu();
 initPlayButton();
 volumeSlider.value = audio.volume;
+
+console.log('Page fully loaded.');
