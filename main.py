@@ -1,5 +1,7 @@
 from flask import Flask, send_from_directory, jsonify
 import os
+import uvicorn
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -26,5 +28,6 @@ def get_waifu_image(filename):
     # Serve specific waifu image
     return send_from_directory(ASSETS_DIR, filename)
 
+# Start the app with Uvicorn
 if __name__ == '__main__':
-    app.run(debug=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000, debug=True)
