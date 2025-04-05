@@ -8,10 +8,11 @@ app = FastAPI()
 
 # Path to the assets directory where waifu images are stored
 ASSETS_DIR = Path('assets/waifus/')
+STATIC_DIR = Path('static')
 
 @app.get("/")
 async def read_index():
-    return FileResponse("static/index.html")
+    return FileResponse(STATIC_DIR / "index.html")
 
 @app.get("/assets/waifus/")
 async def get_waifu_images():
@@ -23,6 +24,14 @@ async def get_waifu_images():
 async def get_waifu_image(filename: str):
     # Serve a specific waifu image
     file_path = ASSETS_DIR / filename
+    if file_path.is_file():
+        return FileResponse(file_path)
+    return JSONResponse({"error": "File not found"}, status_code=404)
+
+@app.get("/static/{filename}")
+async def get_static_file(filename: str):
+    # Serve any file from the static directory
+    file_path = STATIC_DIR / filename
     if file_path.is_file():
         return FileResponse(file_path)
     return JSONResponse({"error": "File not found"}, status_code=404)
