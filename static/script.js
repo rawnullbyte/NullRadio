@@ -114,10 +114,28 @@ volumeSlider.addEventListener('input', () => {
 
 // Gore/horror-themed quotes (non-repeating until all shown)
 const allQuotes = [
-    '“You should enjoy the little detours. Because that’s where you’ll find the things more important than what you want.” — Hunter x Hunter',
-    '“My whole life was just a game to you, wasn’t it?” — Tokyo Ghoul',
-    // ...other quotes
+    "In order to escape a cruel reality, I always had to act strong… But I'm not strong. I'm empty. — Gaara, Naruto",
+    "I mustn't run away. I mustn't run away. I mustn't run away... — Shinji Ikari, Neon Genesis Evangelion",
+    "It’s better to be hurt than to hurt others. Nice people can be happy with just that. — Kaneki Ken, Tokyo Ghoul",
+    "You shouldn't have to bear it all alone. You should talk to someone. You should cry when you want to cry. — Tomoya Okazaki, Clannad: After Story",
+    "Maybe there's only a dark road up ahead. But you still have to believe and keep going. — Kaori Miyazono, Your Lie in April",
+    "I always thought that people who were alone were weak. I was wrong. — C.C., Code Geass",
+    "Living is pain. It’s only natural to die. — Envy, Fullmetal Alchemist: Brotherhood",
+    "A lesson without pain is meaningless. — Edward Elric, Fullmetal Alchemist: Brotherhood",
+    "I'm fine… I’m just broken. — Homura Akemi, Madoka Magica",
+    "It hurts. It hurts so much. — Menma, Anohana",
+    "I'm just tired. Tired of everything. — Unknown, Various",
+    "If I disappear, will anyone notice? — Unknown, Various",
+    "Crying is not a sign of weakness. — Izumi Curtis, Fullmetal Alchemist: Brotherhood",
+    "I wish someone would tell me it’s okay to not be okay. — Unknown, Various",
+    "Even if I cry, even if I scream, it won’t bring them back. — Mikaela Hyakuya, Seraph of the End",
+    "I’m scared of what’s inside me. — Lucy, Elfen Lied",
+    "I feel like I’m slowly dying inside. — Unknown, Various",
+    "Loneliness is eating me alive. — Crona, Soul Eater",
+    "Being alone is more painful than getting hurt. — Monkey D. Luffy, One Piece",
+    "I’m sick of pretending to be okay. — Unknown, Various"
 ];
+
 
 let quoteQueue = [...allQuotes];
 
